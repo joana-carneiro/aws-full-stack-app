@@ -35,13 +35,24 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
           .send(`Image URL is required!`);
     }
 
-    //call filterImageFromURL(image_url) to filter the image
-    let filteredImage = await filterImageFromURL(image_url).catch(() => {});
+    try {
 
-    // send the resulting file in the response
-    // deletes any files on the server on finish of the response
-    return res.sendFile(filteredImage, resolve =>
-        deleteLocalFiles([filteredImage]));
+      //call filterImageFromURL(image_url) to filter the image
+      let filteredImage = await filterImageFromURL(image_url);
+
+      // send the resulting file in the response
+      // deletes any files on the server on finish of the response
+      return res.sendFile(filteredImage, resolve =>
+          deleteLocalFiles([filteredImage]));
+
+    } catch (error) {
+
+      return res.status(422)
+          .send(`Image URL not found!`);
+
+    }
+
+
 
   } );
 
