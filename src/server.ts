@@ -36,14 +36,10 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     }
 
     //call filterImageFromURL(image_url) to filter the image
-    let filteredImage = await filterImageFromURL(image_url);
+    let filteredImage = await filterImageFromURL(image_url).catch(() => {});
 
-    //check if there is a response
-    if(!filteredImage) {
-      return res.status(400)
-          .send(`Error! Not possible to filter the provided image!`);
-    }
-
+    // send the resulting file in the response
+    // deletes any files on the server on finish of the response
     return res.sendFile(filteredImage, resolve =>
         deleteLocalFiles([filteredImage]));
 
