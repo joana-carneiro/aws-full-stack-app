@@ -45,8 +45,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
     }
 
     return res.status(200)
-        .sendFile(filteredImage, res.status(400)
-            .send(`Error! Not possible to filter the provided image!`));
+        .sendFile(filteredImage);
 
   } );
 
