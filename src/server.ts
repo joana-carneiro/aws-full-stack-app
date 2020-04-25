@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Router, Request, Response } from 'express';
 import bodyParser from 'body-parser';
 import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
@@ -13,9 +13,8 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   // Use the body parser middleware for post requests
   app.use(bodyParser.json());
 
-  // @TODO1 IMPLEMENT A RESTFUL ENDPOINT
-  // GET /filteredimage?image_url={{URL}}
-  // endpoint to filter an image from a public url.
+  // GET a filtered image passing a public URL --> /filteredimage?image_url={{URL}}
+  // Try locally example happy flow: http://localhost:8082/filteredimage?image_url=https://exitoina.uol.com.br/media/_versions/babyyoda309850_widelg.jpg
   // IT SHOULD
   //    1
   //    1. validate the image_url query
@@ -26,10 +25,35 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   //    image_url: URL of a publicly accessible image
   // RETURNS
   //   the filtered image file [!!TIP res.sendFile(filteredpath); might be useful]
+  app.get( "/filteredimage/", async ( req: Request, res: Response ) => {
+    let { image_url } = req.query;
 
-  /**************************************************************************** */
+    //validate the image_url query
+    if ( !image_url ) {
+      return res.status(400)
+          .send(`Image URL is required!`);
+    }
 
-  //! END @TODO1
+    try {
+
+      //call filterImageFromURL(image_url) to filter the image
+      let filteredImage = await filterImageFromURL(image_url);
+
+      // send the resulting file in the response
+      // deletes any files on the server on finish of the response
+      return res.sendFile(filteredImage, resolve =>
+          deleteLocalFiles([filteredImage]));
+
+    } catch (error) {
+
+      return res.status(422)
+          .send(`Image URL not found!`);
+
+    }
+
+
+
+  } );
   
   // Root Endpoint
   // Displays a simple message to the user
