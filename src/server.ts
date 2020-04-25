@@ -14,8 +14,7 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
   app.use(bodyParser.json());
 
   // GET a filtered image passing a public URL --> /filteredimage?image_url={{URL}}
-  // Try locally - happy flow: http://localhost:8082/filteredimage?image_url=https://exitoina.uol.com.br/media/_versions/babyyoda309850_widelg.jpg
-  // Try locally - error: http://localhost:8082/filteredimage?image_url=https://timedotcom.files.wordpress.com/2019/03/kitten-report.jpg
+  // Try locally example happy flow: http://localhost:8082/filteredimage?image_url=https://exitoina.uol.com.br/media/_versions/babyyoda309850_widelg.jpg
   // IT SHOULD
   //    1
   //    1. validate the image_url query
@@ -55,10 +54,6 @@ import {filterImageFromURL, deleteLocalFiles} from './util/util';
 
 
   } );
-
-  /**************************************************************************** */
-
-  //! END @TODO1
   
   // Root Endpoint
   // Displays a simple message to the user
